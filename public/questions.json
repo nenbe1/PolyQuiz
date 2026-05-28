@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "categorie": "Sports Mécaniques",
+    "libelle": "Qui détient le record du nombre de titres mondiaux en Formule 1 ?",
+    "options": ["Michael Schumacher", "Lewis Hamilton", "Ayrton Senna", "Schumacher & Hamilton"],
+    "bonne_reponse": "Schumacher & Hamilton"
+  },
+  {
+    "id": 2,
+    "categorie": "Sports Mécaniques",
+    "libelle": "Sur quel circuit se déroule le Grand Prix d'Italie de F1 ?",
+    "options": ["Monza", "Imola", "Mugello", "Spa-Francorchamps"],
+    "bonne_reponse": "Monza"
+  },
+  {
+    "id": 3,
+    "categorie": "Culture Japonaise",
+    "libelle": "Quel est le manga le plus vendu de tous les temps ?",
+    "options": ["Naruto", "Dragon Ball", "One Piece", "Demon Slayer"],
+    "bonne_reponse": "One Piece"
+  },
+  {
+    "id": 4,
+    "categorie": "Culture Japonaise",
+    "libelle": "Dans l'anime Naruto, qui est le premier grand maître de Naruto ?",
+    "options": ["Kakashi", "Jiraiya", "Iruka", "Orochimaru"],
+    "bonne_reponse": "Iruka"
+  },
+  {
+    "id": 5,
+    "categorie": "Sports Collectifs",
+    "libelle": "Quelle équipe de la NBA détient le record du plus grand nombre de victoires en une saison régulière (73-9) ?",
+    "options": ["Chicago Bulls", "Golden State Warriors", "Los Angeles Lakers", "Boston Celtics"],
+    "bonne_reponse": "Golden State Warriors"
+  }
+]
