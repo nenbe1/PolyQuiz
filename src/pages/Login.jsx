@@ -1,40 +1,69 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../context/UserContext';
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
-export default function Login() {
-  const [pseudoInput, setPseudoInput] = useState('');
-  const { setUsername } = useContext(UserContext);
+function Login() {
+  const [pseudoInput, setPseudoInput] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const { loginUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleStart = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (pseudoInput.trim().length >= 3) {
-      setUsername(pseudoInput.trim());
-      navigate('/quiz'); // Direction le quiz
-    } else {
-      alert("Veuillez saisir un pseudonyme de 3 caractères minimum.");
+    if (!pseudoInput.trim()) return;
+
+    try {
+      // 1. Appel POST vers ton API de login Node.js (Jalon 5.1)
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pseudo: pseudoInput }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Erreur lors de l'authentification");
+      }
+
+      // 2. Stockage du token JWT reçu dans le localStorage (Jalon 5.1)
+      localStorage.setItem("polyquiz_token", data.token);
+
+      // 3. Mise à jour du contexte global de l'application
+      if (loginUser) {
+        loginUser(data.user.pseudo);
+      }
+
+      // 4. Redirection vers le jeu
+      navigate("/quiz");
+
+    } catch (error) {
+      setErrorMessage(error.message);
     }
   };
 
   return (
-    <div style={{ padding: '3rem', maxWidth: '450px', margin: '50px auto', border: '1px solid #ddd', borderRadius: '8px', textAlign: 'center', boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}>
-      <h2>PolyQuiz 🏁</h2>
-      <p style={{ color: '#666' }}>Plateforme Interactive de Compétition Expert</p>
+    <div style={{ padding: "2rem", textAlign: "center" }}>
+      <h1>🎓 Bienvenue sur PolyQuiz !</h1>
+      <p>Testez vos connaissances au niveau Expert (F1, NBA, Manga)</p>
       
-      <form onSubmit={handleStart} style={{ marginTop: '2rem' }}>
-        <input 
+      <form onSubmit={handleSubmit} style={{ marginTop: "2rem" }}>
+        <input
           type="text"
           placeholder="Entrez votre pseudonyme..."
           value={pseudoInput}
           onChange={(e) => setPseudoInput(e.target.value)}
-          style={{ width: '100%', padding: '0.8rem', marginBottom: '1rem', borderRadius: '4px', border: '1px solid #ccc', boxSizing: 'border-box' }}
+          style={{ padding: "0.5rem", fontSize: "1rem", marginRight: "1rem" }}
           required
         />
-        <button type="submit" style={{ width: '100%', padding: '0.8rem', backgroundColor: '#e67e22', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
-          Rejoindre la compétition
+        <button type="submit" style={{ padding: "0.5rem 1rem", fontSize: "1rem", cursor: "pointer" }}>
+          Rejoindre l'arène
         </button>
       </form>
+
+      {errorMessage && <p style={{ color: "red", marginTop: "1rem" }}>{errorMessage}</p>}
     </div>
   );
 }
+
+export default Login;
